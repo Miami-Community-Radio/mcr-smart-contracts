@@ -1,0 +1,96 @@
+# MCR Membership Verification Token
+
+
+## Install
+
+```
+git clone https://github.com/Miami-Community-Radio/mcr-smart-contracts.git
+cd mcr-smart-contracts
+npm install
+```
+
+## Contracts
+
+The protocol level contracts use OpenZeppelin extensively for referencing standard EIPs.
+Membership Verification Token utilizes OpenZeppelin's implementations for EIP-165 and EIP-173.
+Please refer to OpenZeppelin's github page [here](https://github.com/OpenZeppelin/openzeppelin-solidity)
+
+## truffle
+
+To use with Truffle, first install it and initialize your project with `truffle init`.
+
+```sh
+npm install -g truffle@beta
+mkdir myproject && cd myproject
+truffle init
+```
+
+## Installing Membership Verification Token
+
+After installing either Framework, to install the Membership Verification Token library, run the following in your Solidity project root directory:
+
+```sh
+npm init -y
+npm install --save MembershipVerificationToken
+```
+
+After that, you'll get all the library's contracts in the `node_modules/MembershipVerificationToken/contracts` folder. You can use the contracts in the library like so:
+
+```solidity
+import 'MembershipVerificationToken/contracts/Protocol/IERC1261.sol';
+
+contract MyContract is IRC1261 {
+  ...
+}
+```
+
+#Linting
+To lint solidity, use
+
+```sh
+node ./node_modules/solhint ./contracts/poll/BasePoll.sol
+```
+
+For linting Solidity files you need to run Solhint with one or more Globs as arguments. For example, to lint all files inside contracts directory, you can do:
+
+```sh
+solhint "contracts/**/*.sol"
+```
+
+To lint a single file:
+
+```sh
+solhint contracts/MyToken.sol
+```
+
+To disable linting for next line, use
+
+// solhint-disable-next-line
+
+To use eslint,
+
+```sh
+node .\node_modules\eslint\bin\eslint.js . --fix
+```
+
+## Testing
+
+Unit test are critical to the Membership Verification Token framework. They help ensure code quality and mitigate against security vulnerabilities. The directory structure within the `/test` directory corresponds to the `/contracts` directory. OpenZeppelin uses Mocha’s JavaScript testing framework and Chai’s assertion library. To learn more about how to tests are structured, please reference Membership Verification Token's Testing Guide.
+
+To run all tests:
+
+Start ganache-cli or other testrpc
+
+```
+npm run test
+truffle test
+```
+
+## Security
+
+Membership Verification Token is meant to provide secure, tested and community-audited code, but please use common sense when doing anything that deals with real money! We take no responsibility for your implementation decisions and any security problem you might experience.
+
+The core development principles and strategies that Membership Verification Token is based on include: security in depth, simple and modular code, clarity-driven naming conventions, comprehensive unit testing, pre-and-post-condition sanity checks, code consistency, and regular audits.
+
+If you find a security issue, please email [chaitanya.potti@gmail.com](mailto:chaitanya.potti@gmail.com).
+
