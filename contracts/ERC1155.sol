@@ -18,9 +18,9 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
     uint256 public timeTillExpire = 90 days;
     uint256 public expireDate = lastMintDate + timeTillExpire;
     uint256 public currentSeason;
-    uint public teamTokenId = 0;
-    uint public residentTokenId = 1;
-    uint public commemorativeTokenId = 2;
+    uint256 public teamTokenId = 0;
+    uint256 public residentTokenId = 1;
+    uint256 public commemorativeTokenId = 2;
 
     uint256 public residentTokensInCirculation; //dynamic, every 3 months, autoburn, non transferable - max supply 50, airdrop
     uint256 public commemorativeTokensInCirculation; //alumni - commerative nft - airdrop , transferable 
@@ -29,7 +29,7 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
     /**
      * @param _uri NFT metadata URI
      */
-    constructor(string memory _uri) payable ERC1155("") {
+    constructor(string memory _uri) payable ERC1155("https://ipfs.io/ipfs/QmY6etG5gm7iocUz7ZmMWbqFEMPixBzFu4irgSTSAYuFMW?filename=MCRERC1155.json") {
         residentTokensInCirculation = 0;
         commemorativeTokensInCirculation = 0;
         teamTokensInCirculation = 0;
@@ -37,15 +37,15 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
     }
 
     //contract metadata
-    function contractURI() public view returns (string memory) {
-        return "https://ipfs.io/ipfs/QmY6etG5gm7iocUz7ZmMWbqFEMPixBzFu4irgSTSAYuFMW?filename=MCRERC1155.json";
-    }
+    // function contractURI() public view returns (string memory) {
+    //     return "";
+    // }
 
     //token metadata
     function uri(uint256 _tokenId) override public view returns (string memory){
         string memory residentUri = string.concat("https://ipfs.io/ipfs/QmWYT5V11ahBwJtNjMybDzdcgTr2RGxWeGaWCNZa892Jfi?filename=S",Strings.toString(currentSeason),".json");
         string memory commemorativeUri = string.concat("https://ipfs.io/ipfs/QmUkXi5hpP9sDui5AVGoXL5gKgkWKXpGgySrirkaSXiZNr?filename=S",Strings.toString(currentSeason - 1),".json");
-        if(_tokenId == 0){//team
+        if(_tokenId == teamTokenId){//team
             return string(abi.encodePacked("https://ipfs.io/ipfs/QmNn2oZTnyRrNDDyHSpqUckjgPkmpFmUiRcX13ouAgqU3b?filename=team.json"));//team.json
         }else if(_tokenId == 1){//resident
             return string(abi.encodePacked(residentUri));
