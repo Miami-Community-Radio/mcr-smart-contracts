@@ -38,18 +38,18 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
         currentSeason = 1;
         commemorativeTokenIds[0] = 2;
         if(currentSeason == 1){
-            string memory residentUri = string.concat("https://gateway.pinata.cloud/ipfs/QmbLL6iM2LsMdDBmjeijXcRVvGbRcArttWkJfYDeYDSEU2/resident.json");
-            string memory commemorativeUri = string.concat("https://gateway.pinata.cloud/ipfs/QmbLL6iM2LsMdDBmjeijXcRVvGbRcArttWkJfYDeYDSEU2/member.json");
+            string memory residentUri = string.concat("https://gateway.pinata.cloud/ipfs/QmPLHXKLJ81g2TL4Y9siPYmKU3fDmuwNJuHB2T53kukJCk/resident.json");
+            string memory commemorativeUri = string.concat("https://gateway.pinata.cloud/ipfs/QmPLHXKLJ81g2TL4Y9siPYmKU3fDmuwNJuHB2T53kukJCk/member.json");
        
             _setTokenUri(residentTokenId, residentUri);
             _setTokenUri(commemorativeTokenIds[0], commemorativeUri);
         }
-        _setTokenUri(teamTokenId, string(abi.encodePacked("https://gateway.pinata.cloud/ipfs/QmbLL6iM2LsMdDBmjeijXcRVvGbRcArttWkJfYDeYDSEU2/team.json")));
+        _setTokenUri(teamTokenId, string(abi.encodePacked("https://gateway.pinata.cloud/ipfs/QmPLHXKLJ81g2TL4Y9siPYmKU3fDmuwNJuHB2T53kukJCk/team.json")));
     }
 
     //contract metadata
     function contractURI() public view returns (string memory) {
-        return "https://gateway.pinata.cloud/ipfs/QmbLL6iM2LsMdDBmjeijXcRVvGbRcArttWkJfYDeYDSEU2/MCRERC1155.json";
+        return "https://gateway.pinata.cloud/ipfs/QmPLHXKLJ81g2TL4Y9siPYmKU3fDmuwNJuHB2T53kukJCk/MCRERC1155.json";
     }
 
     //token metadata
@@ -122,7 +122,7 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
     function performUpkeep(bytes calldata) external override {
         (bool needsUpkeep, ) = checkUpkeep("");
         require(needsUpkeep == true, "Upkeep not needed.");
-        _burn(msg.sender, residentTokenId, 50);//check if this burns all tokens?
+        _burn(msg.sender, residentTokenId, residentTokensInCirculation);
         residentTokensInCirculation = 0;//reset resident tokens
         currentSeason++;
     }
