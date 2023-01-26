@@ -57,7 +57,7 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
         return (_tokenURIs[_tokenId]);
     }
 
-    function _setTokenUri(uint256 tokenId, string memory tokenURI) private {
+    function _setTokenUri(uint256 tokenId, string memory tokenURI) public onlyOwner {
         _tokenURIs[tokenId] = tokenURI;
     }
 
@@ -84,7 +84,7 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
 
     /*season and resident token minting function */
     function mintSeason(address account, uint256 amount, bytes memory data) external onlyOwner {
-        if (amount < 51) {
+        if (currentSeason == 1 && amount < 51) {
             //50 resident cap
             if (block.timestamp > expireDate) {
                 //check if last season passed and nfts were burnt
