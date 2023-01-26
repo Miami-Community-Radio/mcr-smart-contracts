@@ -20,14 +20,14 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
     uint256 public currentSeason;
     uint256 public teamTokenId = 0;
     uint256 public residentTokenId = 1;
-    mapping(uint256 => uint256) public commemorativeTokenIds;//[2,...]
+    mapping(uint256 => uint256) public commemorativeTokenIds; //[2,...]
 
     uint256 public residentTokensInCirculation; //dynamic, every 3 months, autoburn, non transferable - max supply 50, airdrop
-    uint256 public commemorativeTokensInCirculation; //alumni - commerative nft - airdrop , transferable 
-    uint256 public  teamTokensInCirculation; //team token - non transferable - no limit
+    uint256 public commemorativeTokensInCirculation; //alumni - commerative nft - airdrop , transferable
+    uint256 public teamTokensInCirculation; //team token - non transferable - no limit
 
-    mapping (uint256 => string) private _tokenURIs;
-    
+    mapping(uint256 => string) private _tokenURIs;
+
     /**
      * @param _uri NFT metadata URI
      */
@@ -37,32 +37,31 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
         teamTokensInCirculation = 0;
         currentSeason = 1;
         commemorativeTokenIds[0] = 2;
-        if(currentSeason == 1){
-            string memory residentUri = string.concat("https://gateway.pinata.cloud/ipfs/QmPLHXKLJ81g2TL4Y9siPYmKU3fDmuwNJuHB2T53kukJCk/resident.json");
-            string memory commemorativeUri = string.concat("https://gateway.pinata.cloud/ipfs/QmPLHXKLJ81g2TL4Y9siPYmKU3fDmuwNJuHB2T53kukJCk/member.json");
-       
+        if (currentSeason == 1) {
+            string memory residentUri = "https://gateway.pinata.cloud/ipfs/QmZNWS3LKS3ZEqXg7QjaBWshLe7RDBBZzaVyXkMc1YqWGg/resident.json";
+            string memory commemorativeUri = "https://gateway.pinata.cloud/ipfs/QmZNWS3LKS3ZEqXg7QjaBWshLe7RDBBZzaVyXkMc1YqWGg/crew.json";
+
             _setTokenUri(residentTokenId, residentUri);
             _setTokenUri(commemorativeTokenIds[0], commemorativeUri);
         }
-        _setTokenUri(teamTokenId, string(abi.encodePacked("https://gateway.pinata.cloud/ipfs/QmPLHXKLJ81g2TL4Y9siPYmKU3fDmuwNJuHB2T53kukJCk/team.json")));
+        _setTokenUri(teamTokenId, string(abi.encodePacked("https://gateway.pinata.cloud/ipfs/QmeqrE4a8kiyZU1ohzBbTiS3eE7cKcgf1BasmGnEU4pfv7")));
     }
 
     //contract metadata
     function contractURI() public view returns (string memory) {
-        return "https://gateway.pinata.cloud/ipfs/QmPLHXKLJ81g2TL4Y9siPYmKU3fDmuwNJuHB2T53kukJCk/MCRERC1155.json";
+        return "https://gateway.pinata.cloud/ipfs/QmZMbwScBgZnxeTYhapbveR5s5fxYrYLsyq2arBnCcQ2mk";
     }
 
     //token metadata
-    function uri(uint256 _tokenId) override public view returns (string memory) { 
-        return(_tokenURIs[_tokenId]); 
+    function uri(uint256 _tokenId) public view override returns (string memory) {
+        return (_tokenURIs[_tokenId]);
     }
 
-    function _setTokenUri(uint256 tokenId, string memory tokenURI)
-    private {
-         _tokenURIs[tokenId] = tokenURI; 
-    } 
+    function _setTokenUri(uint256 tokenId, string memory tokenURI) private {
+        _tokenURIs[tokenId] = tokenURI;
+    }
 
-     /**
+    /**
      * @dev Updates the base URI that will be used to retrieve metadata.
      * @param newuri The base URI to be used.
      */
@@ -70,50 +69,36 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
         _setURI(newuri);
     }
 
-
-    function mintTeamTokens(
-        address account,
-        uint256 amount,
-        bytes memory data
-    ) public onlyOwner {
+    function mintTeamTokens(address account, uint256 amount, bytes memory data) public onlyOwner {
         _mint(account, teamTokenId, amount, data);
         teamTokensInCirculation = teamTokensInCirculation + amount;
     }
 
-    function mintCommemorativeTokens(
-        address account,
-        uint256 amount,
-        bytes memory data
-    ) external onlyOwner {
-        if(currentSeason > 1){
-            commemorativeTokenIds[currentSeason - 1] = commemorativeTokenIds[currentSeason - 2] + 1; //adding new entry for next season 
-            _mint(account, commemorativeTokenIds[currentSeason-2], amount, data);
+    function mintCommemorativeTokens(address account, uint256 amount, bytes memory data) external onlyOwner {
+        if (currentSeason > 1) {
+            commemorativeTokenIds[currentSeason - 1] = commemorativeTokenIds[currentSeason - 2] + 1; //adding new entry for next season
+            _mint(account, commemorativeTokenIds[currentSeason - 2], amount, data);
             commemorativeTokensInCirculation = commemorativeTokensInCirculation + amount;
         }
     }
 
     /*season and resident token minting function */
-    function mintSeason(
-        address account,
-        uint256 amount,
-        bytes memory data
-    ) external onlyOwner {
-        if(amount < 51){//50 resident cap
-            if(block.timestamp > expireDate){//check if last season passed and nfts were burnt
+    function mintSeason(address account, uint256 amount, bytes memory data) external onlyOwner {
+        if (amount < 51) {
+            //50 resident cap
+            if (block.timestamp > expireDate) {
+                //check if last season passed and nfts were burnt
                 _mint(account, residentTokenId, amount, data);
-                
+
                 residentTokensInCirculation = residentTokensInCirculation + amount;
-                
-                lastMintDate = block.timestamp;//set mint date
+
+                lastMintDate = block.timestamp; //set mint date
             }
         }
     }
 
     //check if it has passed expiration and burn resident tokens
-    function checkUpkeep(bytes memory)
-        public override
-        returns (bool needsUpkeep, bytes memory)
-    {
+    function checkUpkeep(bytes memory) public override returns (bool needsUpkeep, bytes memory) {
         bool timePassed = (expireDate <= currentDate);
         needsUpkeep = (timePassed);
     }
@@ -123,27 +108,21 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
         (bool needsUpkeep, ) = checkUpkeep("");
         require(needsUpkeep == true, "Upkeep not needed.");
         _burn(msg.sender, residentTokenId, residentTokensInCirculation);
-        residentTokensInCirculation = 0;//reset resident tokens
+        residentTokensInCirculation = 0; //reset resident tokens
         currentSeason++;
     }
 
-    function _beforeTokenTransfer(
-        address operator,
-        address from,
-        address to,
-        uint256[] memory ids,
-        uint256[] memory amounts,
-        bytes memory data
-    ) internal override(ERC1155, ERC1155Supply) {
-        
-        for(uint i=0; i < ids.length; i++){//resident and team token only transferable by owner
-            if(ids[i] == residentTokenId || ids[i] == teamTokenId){
+    function _beforeTokenTransfer(address operator, address from, address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
+        internal
+        override(ERC1155, ERC1155Supply)
+    {
+        for (uint256 i = 0; i < ids.length; i++) {
+            //resident and team token only transferable by owner
+            if (ids[i] == residentTokenId || ids[i] == teamTokenId) {
                 require(msg.sender == owner(), "Not allowed to transfer token");
             }
         }
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
     }
 
-    
 }
-
