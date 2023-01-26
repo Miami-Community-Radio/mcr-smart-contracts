@@ -26,7 +26,7 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
     uint256 public commemorativeTokensInCirculation; //alumni - commerative nft - airdrop , transferable
     uint256 public teamTokensInCirculation; //team token - non transferable - no limit
 
-    mapping(uint256 => string) private _tokenURIs;
+    mapping(uint256 => string) public _tokenURIs;
 
     /**
      * @param _uri NFT metadata URI
@@ -38,13 +38,10 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
         currentSeason = 1;
         commemorativeTokenIds[0] = 2;
         if (currentSeason == 1) {
-            string memory residentUri = "https://gateway.pinata.cloud/ipfs/QmZNWS3LKS3ZEqXg7QjaBWshLe7RDBBZzaVyXkMc1YqWGg/resident.json";
-            string memory commemorativeUri = "https://gateway.pinata.cloud/ipfs/QmZNWS3LKS3ZEqXg7QjaBWshLe7RDBBZzaVyXkMc1YqWGg/crew.json";
-
-            _setTokenUri(residentTokenId, residentUri);
-            _setTokenUri(commemorativeTokenIds[0], commemorativeUri);
+            _setTokenUri(residentTokenId, "https://gateway.pinata.cloud/ipfs/QmZNWS3LKS3ZEqXg7QjaBWshLe7RDBBZzaVyXkMc1YqWGg/resident.json");
+            _setTokenUri(2, "https://gateway.pinata.cloud/ipfs/QmZNWS3LKS3ZEqXg7QjaBWshLe7RDBBZzaVyXkMc1YqWGg/crew.json");
         }
-        _setTokenUri(teamTokenId, string(abi.encodePacked("https://gateway.pinata.cloud/ipfs/QmeqrE4a8kiyZU1ohzBbTiS3eE7cKcgf1BasmGnEU4pfv7")));
+        _setTokenUri(teamTokenId, "https://gateway.pinata.cloud/ipfs/QmeqrE4a8kiyZU1ohzBbTiS3eE7cKcgf1BasmGnEU4pfv7");
     }
 
     //contract metadata
@@ -54,7 +51,7 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
 
     //token metadata
     function uri(uint256 _tokenId) public view override returns (string memory) {
-        return (_tokenURIs[_tokenId]);
+        return (_tokenURIs[_tokenId]); //string(abi.encodePacked((_tokenURIs[_tokenId])));
     }
 
     function _setTokenUri(uint256 tokenId, string memory tokenURI) public onlyOwner {
