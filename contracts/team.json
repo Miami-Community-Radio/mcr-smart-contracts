@@ -1,5 +1,6 @@
 {
-    "id": 0,
-    "name": "MCR Team",
-    "image": "https://gateway.pinata.cloud/ipfs/QmbQD8r5FQcFYAVib4os5CJMymURewmT13VrdKs9G7Wita/team.png"
+  "id": 0,
+  "name": "MCR Team",
+  "description": "This is a token signifying MCR team members so that they can have access to token gated parts of our infrastructure.",
+  "image": "https://gateway.pinata.cloud/ipfs/QmTytP695myNj7Yu1kpihkWvxcw7SYu6G4P9y1DpzNQQuM"
 }

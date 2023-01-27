@@ -1,5 +1,6 @@
 {
-    "id": 1,
-    "name": "Season 1 MCR Resident",
-    "image": "https://gateway.pinata.cloud/ipfs/QmbQD8r5FQcFYAVib4os5CJMymURewmT13VrdKs9G7Wita/resident.png"
+  "id": 1,
+  "name": "Season 1 MCR Resident",
+  "description": "This is a temporary resident membership access token designated for official participation in Season 1 of Miami Community Radio. This will be active January 30th and burned April 15th of 2023.",
+  "image": "https://gateway.pinata.cloud/ipfs/QmYGLJ19176wLJJSkEcoz86BKKKT5TxjwETCUpMCPpCtjB/s1r.png"
 }

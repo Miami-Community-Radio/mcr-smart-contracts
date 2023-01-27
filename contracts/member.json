@@ -1,5 +1,6 @@
 {
-    "id": 2,
-    "name": "Season 1 MCR Member",
-    "image": "https://gateway.pinata.cloud/ipfs/QmbQD8r5FQcFYAVib4os5CJMymURewmT13VrdKs9G7Wita/member.png"
+  "id": 2,
+  "name": "Season 1 MCR Crew",
+  "description": "This is the official MCR commemorative NFT containing an artwork created by Nicholas G. Padilla / ngp, available only to residents who participated in Season 1 of Miami Community Radio between January 30th and April 15th of 2023.",
+  "image": "https://gateway.pinata.cloud/ipfs/QmYGLJ19176wLJJSkEcoz86BKKKT5TxjwETCUpMCPpCtjB/s1c.png"
 }

@@ -38,10 +38,19 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
         currentSeason = 1;
         commemorativeTokenIds[0] = 2;
         if (currentSeason == 1) {
-            _setTokenUri(residentTokenId, "https://gateway.pinata.cloud/ipfs/QmZNWS3LKS3ZEqXg7QjaBWshLe7RDBBZzaVyXkMc1YqWGg/resident.json");
-            _setTokenUri(2, "https://gateway.pinata.cloud/ipfs/QmZNWS3LKS3ZEqXg7QjaBWshLe7RDBBZzaVyXkMc1YqWGg/crew.json");
+            _setTokenUri(
+                residentTokenId,
+                "https://gateway.pinata.cloud/ipfs/Qmersmu1UD34sPEYbXipXcG3iekvMcSj55xe5RJByYBBJH?_gl=1*sdud2x*_ga*MjI2MjI5NzUuMTY3NDc1MTMxOA..*_ga_5RMPXG14TE*MTY3NDc4NDg5Mi41LjAuMTY3NDc4NDg5NC41OC4wLjA."
+            );
+            _setTokenUri(
+                2,
+                "https://gateway.pinata.cloud/ipfs/QmUYw8bgr16mFyvVS4AJE2LxH4brJusxjncHcGSkrVuxgE?_gl=1*zykpoe*_ga*MjI2MjI5NzUuMTY3NDc1MTMxOA..*_ga_5RMPXG14TE*MTY3NDc4NDg5Mi41LjAuMTY3NDc4NDg5NC41OC4wLjA."
+            );
         }
-        _setTokenUri(teamTokenId, "https://gateway.pinata.cloud/ipfs/QmeqrE4a8kiyZU1ohzBbTiS3eE7cKcgf1BasmGnEU4pfv7");
+        _setTokenUri(
+            teamTokenId,
+            "https://gateway.pinata.cloud/ipfs/QmNaMz8C6uvG3JE6G76uu44mqaH7TPTsSiKXZBpcA42y4D?_gl=1*sdud2x*_ga*MjI2MjI5NzUuMTY3NDc1MTMxOA..*_ga_5RMPXG14TE*MTY3NDc4NDg5Mi41LjAuMTY3NDc4NDg5NC41OC4wLjA."
+        );
     }
 
     //contract metadata
@@ -81,16 +90,13 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
 
     /*season and resident token minting function */
     function mintSeason(address account, uint256 amount, bytes memory data) external onlyOwner {
-        if (currentSeason == 1 && amount < 51) {
-            //50 resident cap
-            if (block.timestamp > expireDate) {
-                //check if last season passed and nfts were burnt
-                _mint(account, residentTokenId, amount, data);
+        if (residentTokensInCirculation == 0) {
+            //check if last season passed and nfts were burnt
+            _mint(account, residentTokenId, amount, data);
 
-                residentTokensInCirculation = residentTokensInCirculation + amount;
+            residentTokensInCirculation = residentTokensInCirculation + amount;
 
-                lastMintDate = block.timestamp; //set mint date
-            }
+            lastMintDate = block.timestamp; //set mint date
         }
     }
 
