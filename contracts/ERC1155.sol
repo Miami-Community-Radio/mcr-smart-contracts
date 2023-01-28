@@ -38,19 +38,10 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
         currentSeason = 1;
         commemorativeTokenIds[0] = 2;
         if (currentSeason == 1) {
-            _setTokenUri(
-                residentTokenId,
-                "https://gateway.pinata.cloud/ipfs/Qmersmu1UD34sPEYbXipXcG3iekvMcSj55xe5RJByYBBJH?_gl=1*sdud2x*_ga*MjI2MjI5NzUuMTY3NDc1MTMxOA..*_ga_5RMPXG14TE*MTY3NDc4NDg5Mi41LjAuMTY3NDc4NDg5NC41OC4wLjA."
-            );
-            _setTokenUri(
-                2,
-                "https://gateway.pinata.cloud/ipfs/QmUYw8bgr16mFyvVS4AJE2LxH4brJusxjncHcGSkrVuxgE?_gl=1*zykpoe*_ga*MjI2MjI5NzUuMTY3NDc1MTMxOA..*_ga_5RMPXG14TE*MTY3NDc4NDg5Mi41LjAuMTY3NDc4NDg5NC41OC4wLjA."
-            );
+            _setTokenUri(residentTokenId, "https://gateway.pinata.cloud/ipfs/QmNwcdiAbH3rVA8reVzLuzWr7K7XHbVx8nmV5FGJaQEAdE/resident.json");
+            _setTokenUri(2, "https://gateway.pinata.cloud/ipfs/QmNwcdiAbH3rVA8reVzLuzWr7K7XHbVx8nmV5FGJaQEAdE/crew.json");
         }
-        _setTokenUri(
-            teamTokenId,
-            "https://gateway.pinata.cloud/ipfs/QmNaMz8C6uvG3JE6G76uu44mqaH7TPTsSiKXZBpcA42y4D?_gl=1*sdud2x*_ga*MjI2MjI5NzUuMTY3NDc1MTMxOA..*_ga_5RMPXG14TE*MTY3NDc4NDg5Mi41LjAuMTY3NDc4NDg5NC41OC4wLjA."
-        );
+        _setTokenUri(teamTokenId, "https://gateway.pinata.cloud/ipfs/QmNaMz8C6uvG3JE6G76uu44mqaH7TPTsSiKXZBpcA42y4D");
     }
 
     //contract metadata
