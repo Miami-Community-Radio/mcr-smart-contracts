@@ -1,5 +1,6 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.8.4;
 
+// SPDX-License-Identifier: UNLICENSED
 contract Migrations {
     address public owner;
     uint256 public lastCompletedMigration;

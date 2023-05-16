@@ -1,15 +1,15 @@
 pragma solidity ^0.8.4;
-
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+// SPDX-License-Identifier: UNLICENSED
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";//https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
-import "@openzeppelin/contracts@4.8.1/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 
-import "CompatibleInterface.sol";
+import "./CompatibleInterface.sol";
 
 contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, CompatibleInterface {
     //3months season timing
@@ -19,8 +19,8 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
     uint256 public expireDate = lastMintDate + timeTillExpire;
     uint256 public currentSeason;
     uint256 public teamTokenId = 0;
-    uint256 public residentTokenId = 1;
-    mapping(uint256 => uint256) public commemorativeTokenIds; //[2,...]
+    uint256 public residentTokenId = 1;//3,5,7...
+    mapping(uint256 => uint256) public commemorativeTokenIds; //[2,4,6...]
 
     uint256 public residentTokensInCirculation; //dynamic, every 3 months, autoburn, non transferable - max supply 50, airdrop
     uint256 public commemorativeTokensInCirculation; //alumni - commerative nft - airdrop , transferable
@@ -73,10 +73,11 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
 
     function mintCommemorativeTokens(address account, uint256 amount, bytes memory data) external onlyOwner {
         if (currentSeason > 1) {
-            commemorativeTokenIds[currentSeason - 1] = commemorativeTokenIds[currentSeason - 2] + 1; //adding new entry for next season
+            commemorativeTokenIds[currentSeason - 1] = commemorativeTokenIds[currentSeason-2] + 2; //adding new entry for next season
             _mint(account, commemorativeTokenIds[currentSeason - 2], amount, data);
             commemorativeTokensInCirculation = commemorativeTokensInCirculation + amount;
         }
+       
     }
 
     /*season and resident token minting function */
@@ -94,15 +95,16 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
     //check if it has passed expiration and burn resident tokens
     function checkUpkeep(bytes memory) public override returns (bool needsUpkeep, bytes memory) {
         bool timePassed = (expireDate <= currentDate);
-        needsUpkeep = (timePassed);
+        needsUpkeep = timePassed;
     }
 
     // //burns token once condition is met
-    function performUpkeep(bytes calldata) external override {
-        (bool needsUpkeep, ) = checkUpkeep("");
+    function performUpkeep(bytes calldata) external override onlyOwner{
+        bool needsUpkeep = true;
         require(needsUpkeep == true, "Upkeep not needed.");
         _burn(msg.sender, residentTokenId, residentTokensInCirculation);
         residentTokensInCirculation = 0; //reset resident tokens
+        residentTokenId = residentTokenId +2;
         currentSeason++;
     }
 
