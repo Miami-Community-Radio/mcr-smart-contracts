@@ -20,7 +20,7 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
     uint256 public currentSeason;
     uint256 public teamTokenId = 0;
     uint256 public residentTokenId = 1;//always 1
-    mapping(uint256 => uint256) public commemorativeTokenIds; //[2,4,6...]
+    mapping(uint256 => uint256) public commemorativeTokenIds; //[2,3,4,5,6...]
 
     uint256 public residentTokensInCirculation; //dynamic, every 3 months, autoburn, non transferable - max supply 50, airdrop
     uint256 public commemorativeTokensInCirculation; //alumni - commerative nft - airdrop , transferable
