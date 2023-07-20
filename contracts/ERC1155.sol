@@ -19,7 +19,7 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
     uint256 public expireDate = lastMintDate + timeTillExpire;
     uint256 public currentSeason;
     uint256 public teamTokenId = 0;
-    uint256 public residentTokenId = 1;//3,5,7...
+    uint256 public residentTokenId = 1;//always 1
     mapping(uint256 => uint256) public commemorativeTokenIds; //[2,4,6...]
 
     uint256 public residentTokensInCirculation; //dynamic, every 3 months, autoburn, non transferable - max supply 50, airdrop
@@ -73,7 +73,7 @@ contract MCRERC1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply, Compati
 
     function mintCommemorativeTokens(address account, uint256 amount, bytes memory data) external onlyOwner {
         if (currentSeason > 1) {
-            commemorativeTokenIds[currentSeason - 1] = commemorativeTokenIds[currentSeason-2] + 2; //adding new entry for next season
+            commemorativeTokenIds[currentSeason - 1] = commemorativeTokenIds[currentSeason-2] + 1; //adding new entry for next season
             _mint(account, commemorativeTokenIds[currentSeason - 2], amount, data);
             commemorativeTokensInCirculation = commemorativeTokensInCirculation + amount;
         }
